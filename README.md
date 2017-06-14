@@ -1,1 +1,1 @@
-myBlinky
+Baseline project to get started on using the STM32F4 Discovery board. Project blinks the green LED connected on PD12 . Blink rate is determined by a loop counter based delay routine. PD12 is configured as low speed general purpose puss-pull output. CPU speed is set to the reset configuration which is 16 Mhz w/o PLL.
