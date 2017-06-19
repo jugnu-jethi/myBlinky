@@ -15,6 +15,14 @@
 
 
 
+volatile uint32_t Delay = 0;
+
+
+
+void msDelay(uint32_t nTime);
+
+
+
 int main(){
 	
 	uint32_t tmpctr = DELAY_COUNTER;
@@ -38,6 +46,9 @@ int main(){
 	while(FALSE == (myRCC->CR & RCC_CR_HSERDY));
 	
 	// Set-up PLL configuration
+	// PLLM = 8, PLLN = 336, PLLP = 2, PLLQ = 7
+	// fPLLIN = 8Mhz/8 = 1Mhz; fVCOOUT = 1Mhz * 336 = 336Mhz; fPLLOUT = 336Mhz/2 = 168Mhz
+	// fUSBOTG = 336Mhz/7 = 48Mhz
 	myRCC->PLLCFGR &= ~(RCC_PLLCFGR_PLLM);
 	myRCC->PLLCFGR |= PLLM_DIV_8;
 	myRCC->PLLCFGR &= ~(RCC_PLLCFGR_PLLN);
@@ -78,17 +89,44 @@ int main(){
 	myPortD->OSPEEDR &= ~(GPIO_OSPEEDR_OSPEED12);
 	myPortD->PUPDR  &= ~(GPIO_PUPDR_PUPD12);
 	
+	// Set-up PD13 as slow speed general purpose push-pull output
+	myPortD->MODER |= GPIO_MODER_MODE13_0;
+	myPortD->MODER &= ~(GPIO_MODER_MODE13_1);
+	myPortD->OTYPER &= ~(GPIO_OTYPER_OT13);
+	myPortD->OSPEEDR &= ~(GPIO_OSPEEDR_OSPEED13);
+	myPortD->PUPDR  &= ~(GPIO_PUPDR_PUPD13);
+	
+	// Set-up for a systick of every 1ms
+	SysTick_Config((168000000U/1000U) - 1);
+	
 	
 	
 	while(TRUE){
 		
+		// Atomically set PD12
 		myPortD->BSRR |= GPIO_BSRR_BS12;
-		for( tmpctr = DELAY_COUNTER; tmpctr > 0; --tmpctr);
+		msDelay(1000);
+		//for( tmpctr = DELAY_COUNTER; tmpctr > 0; --tmpctr);
+		// Atomically reset PD12
 		myPortD->BSRR |= GPIO_BSRR_BR12;
-		for( tmpctr = DELAY_COUNTER; tmpctr > 0; --tmpctr);
+		//for( tmpctr = DELAY_COUNTER; tmpctr > 0; --tmpctr);
+		msDelay(1000);
 	}
 	
 	
 	
 	return 0;
+}
+
+
+
+void SysTick_Handler(void){
+	if(Delay > 0) --Delay;
+}
+
+
+
+void msDelay(uint32_t nTime){
+	Delay = nTime;
+	while(Delay != 0);
 }
