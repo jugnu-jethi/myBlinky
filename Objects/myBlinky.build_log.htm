@@ -30,13 +30,13 @@ Rebuild target 'Target 1'
 assembling startup_stm32f407xx.s...
 compiling system_stm32f4xx.c...
 compiling main.c...
-main.c(118): warning:  #111-D: statement is unreachable
+main.c(126): warning:  #111-D: statement is unreachable
   	return 0;
 main.c(28): warning:  #177-D: variable "tmpctr"  was declared but never referenced
   	uint32_t tmpctr = DELAY_COUNTER;
 main.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=1170 RO-data=450 RW-data=8 ZI-data=1632  
+Program Size: Code=1226 RO-data=450 RW-data=8 ZI-data=1632  
 ".\Objects\myBlinky.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
@@ -63,12 +63,12 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.0.1
 
    * Component: Keil::Device:Startup:2.6.0
-      Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-      Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
-      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f407xx.s
       Source file:   MDK\Device\Source\ARM\STM32F40xxx_41xxx_OPT.s
+      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f407xx.s
+      Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
+      Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
       Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c
-Build Time Elapsed:  00:00:04
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>

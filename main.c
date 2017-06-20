@@ -29,6 +29,7 @@ int main(){
 	RCC_TypeDef *myRCC = RCC;
 	GPIO_TypeDef *myPortD = GPIOD;
 	FLASH_TypeDef *myFlash = FLASH;
+	IWDG_TypeDef *myIWatchDog = IWDG;
 	
 	// Set flash wait states to 5
 	// Reference Manual: Section 3.5.1
@@ -97,20 +98,27 @@ int main(){
 	myPortD->PUPDR  &= ~(GPIO_PUPDR_PUPD13);
 	
 	// Set-up for a systick of every 1ms
-	SysTick_Config((168000000U/1000U) - 1);
+	SysTick_Config((SystemCoreClock/1000) - 1);
 	
+	// Set-up IWDG for reset of 32768ms
+	myIWatchDog->KR = 0x5555;
+	myIWatchDog->PR = 0x4;
+	//myIWatchDog->RLR = 0xFFF;
+	myIWatchDog->KR = 0xCCCC;
 	
+	msDelay(2000);
+	myPortD->BSRR |= GPIO_BSRR_BS13;
 	
 	while(TRUE){
 		
 		// Atomically set PD12
 		myPortD->BSRR |= GPIO_BSRR_BS12;
-		msDelay(1000);
+		msDelay(500);
 		//for( tmpctr = DELAY_COUNTER; tmpctr > 0; --tmpctr);
 		// Atomically reset PD12
 		myPortD->BSRR |= GPIO_BSRR_BR12;
 		//for( tmpctr = DELAY_COUNTER; tmpctr > 0; --tmpctr);
-		msDelay(1000);
+		msDelay(500);
 	}
 	
 	
