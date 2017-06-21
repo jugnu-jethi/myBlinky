@@ -12,10 +12,15 @@
 #define PLLP_DIV_4 ((1U) << RCC_PLLCFGR_PLLP_Pos)
 #define PLLQ_DIV_7 ((7U) << RCC_PLLCFGR_PLLQ_Pos)
 #define PLLQ_DIV_14 ((14U) << RCC_PLLCFGR_PLLQ_Pos)
+#define IWDG_UNLOCK_KEY (0X5555)
+#define IWDG_START_KEY (0XCCCC)
+#define IWDG_RELOAD_KEY (0XAAAA)
+#define IWDG_PRESCALER_256 (7)
 
 
 
 volatile uint32_t Delay = 0;
+volatile IWDG_TypeDef *myIWatchDog = IWDG;
 
 
 
@@ -29,7 +34,7 @@ int main(){
 	RCC_TypeDef *myRCC = RCC;
 	GPIO_TypeDef *myPortD = GPIOD;
 	FLASH_TypeDef *myFlash = FLASH;
-	IWDG_TypeDef *myIWatchDog = IWDG;
+	
 	
 	// Set flash wait states to 5
 	// Reference Manual: Section 3.5.1
@@ -100,25 +105,28 @@ int main(){
 	// Set-up for a systick of every 1ms
 	SysTick_Config((SystemCoreClock/1000) - 1);
 	
-	// Set-up IWDG for reset of 32768ms
-	myIWatchDog->KR = 0x5555;
-	myIWatchDog->PR = 0x4;
-	//myIWatchDog->RLR = 0xFFF;
-	myIWatchDog->KR = 0xCCCC;
-	
+	// TBR - Code to demo watchdog reset
 	msDelay(2000);
 	myPortD->BSRR |= GPIO_BSRR_BS13;
+	
+	// Set-up IWDG for reset of 32768ms
+	myIWatchDog->KR = IWDG_UNLOCK_KEY;
+	myIWatchDog->PR = IWDG_PRESCALER_256;
+	myIWatchDog->RLR = 4095;
+	myIWatchDog->KR = IWDG_START_KEY;
+	
+	
 	
 	while(TRUE){
 		
 		// Atomically set PD12
 		myPortD->BSRR |= GPIO_BSRR_BS12;
-		msDelay(500);
+		msDelay(1000);
 		//for( tmpctr = DELAY_COUNTER; tmpctr > 0; --tmpctr);
 		// Atomically reset PD12
 		myPortD->BSRR |= GPIO_BSRR_BR12;
 		//for( tmpctr = DELAY_COUNTER; tmpctr > 0; --tmpctr);
-		msDelay(500);
+		msDelay(1000);
 	}
 	
 	
@@ -129,6 +137,10 @@ int main(){
 
 
 void SysTick_Handler(void){
+	
+	// Re-load watchdog counter
+	myIWatchDog->KR = 0xAAAA;
+	
 	if(Delay > 0) --Delay;
 }
 
