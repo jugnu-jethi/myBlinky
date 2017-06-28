@@ -1,4 +1,5 @@
 #include "stm32f4xx.h"
+#include <stdio.h>
 
 
 
@@ -114,6 +115,9 @@ int main(){
 	myIWatchDog->PR = IWDG_PRESCALER_256;
 	myIWatchDog->RLR = 4095;
 	myIWatchDog->KR = IWDG_START_KEY;
+	
+	// Enable printf thru ITM Port 0
+	printf("Hello World!\n");
 	
 	
 	

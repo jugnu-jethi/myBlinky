@@ -22,21 +22,20 @@ Dialog DLL:      TCM.DLL V1.27.0.0
  
 <h2>Project:</h2>
 C:\Users\jugnu\Documents\MDKv5-ARM\myBlinky\myBlinky.uvprojx
-Project File Date:  06/19/2017
+Project File Date:  06/28/2017
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
-Rebuild target 'Target 1'
-assembling startup_stm32f407xx.s...
+Build target 'Target 1'
+compiling retarget_io.c...
 compiling main.c...
-main.c(134): warning:  #111-D: statement is unreachable
+main.c(137): warning:  #111-D: statement is unreachable
   	return 0;
-main.c(33): warning:  #177-D: variable "tmpctr"  was declared but never referenced
+main.c(34): warning:  #177-D: variable "tmpctr"  was declared but never referenced
   	uint32_t tmpctr = DELAY_COUNTER;
 main.c: 2 warnings, 0 errors
-compiling system_stm32f4xx.c...
 linking...
-Program Size: Code=1250 RO-data=450 RW-data=12 ZI-data=1636  
+Program Size: Code=4418 RO-data=474 RW-data=24 ZI-data=1888  
 ".\Objects\myBlinky.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
@@ -46,6 +45,12 @@ Package Vendor: ARM
                 ARM::CMSIS:CORE:5.0.1
                 CMSIS (Cortex Microcontroller Software Interface Standard)
    * Component: CORE Version: 5.0.1
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.ARM_Compiler.1.3.0.pack
+                Keil.ARM Compiler::Compiler:I/O:STDOUT:ITM:1.2.0
+                Keil ARM Compiler extensions for ARM Compiler 5 and ARM Compiler 6
+   * Component: STDOUT Variant: ITM Version: 1.2.0
 
 Package Vendor: Keil
                 http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.11.0.pack
@@ -62,13 +67,16 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:5.0.1
 
+   * Component: Keil.ARM Compiler::Compiler:I/O:STDOUT:ITM:1.2.0
+      Source file:   Source\retarget_io.c
+
    * Component: Keil::Device:Startup:2.6.0
-      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c
-      Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f407xx.s
       Source file:   MDK\Device\Source\ARM\STM32F40xxx_41xxx_OPT.s
+      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f407xx.s
+      Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
       Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
-Build Time Elapsed:  00:00:04
+      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c
+Build Time Elapsed:  00:00:06
 </pre>
 </body>
 </html>
